@@ -6,16 +6,16 @@
 
 body {
   margin: 0;
+  background-color: #232323;
 }
 .main {
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-content: center;
-
 }
 .content {
-  background-color: blue;
+  /* background-color: blue; */
   height: 100vh;
   min-width: 60vw;
   display: flex;
@@ -23,10 +23,67 @@ body {
   padding: 0.5rem;
 }
 
-.search {
+.topContent {
   height: 8vh;
   width: 100%;
-  background-color: purple;
+
+  padding: 0.5rem;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.searchBar {
+  display: flex;
+  align-items: center;
+  height: 90%;
+  width: 30%;
+  background-color: #373737;
+  border-radius: 2rem;
+  transition: 300ms ease-in-out;
+}
+
+.searchBar:focus-within {
+  width: 90%;
+}
+/* This is the input inside the bar */
+.search {
+  height: 100%;
+  width: 20vw;
+  flex-grow: 1;
+  font-size:clamp(0.5rem,1.2rem,2rem);
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  margin-left: 1.5rem;
+}
+.searchIcon {
+  height: 50px;
+  width: 50px; /* Use pixels instead of vw to keep it consistent */
+  background-image: url("Images/search.png");
+  background-size: 25px 25px;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-left: 2rem;
+}
+
+.settings{
+    height: 50px;
+    width: 50px; /* Use pixels instead of vw to keep it consistent */
+    background-image: url("Images/settings.png");
+    background-size: 25px 25px;
+    background-repeat: no-repeat;
+    margin-left: auto;
+    background-position: center;
+    border-radius: 50%;
+    background-color: #373737;
+    transition: 250ms ease-in-out;
+    cursor: pointer;
+}
+.settings:hover{
+    background-color: #7b7a7a;
+    transform: rotate(180deg);
 }
 
 .generalInfo {
