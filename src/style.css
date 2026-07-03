@@ -35,7 +35,7 @@ body {
 
 .topContent {
   height: 8vh;
-  min-height: 60px; 
+  min-height: 60px;
   width: 100%;
   padding: 0.5rem;
   display: flex;
@@ -52,11 +52,12 @@ body {
   min-width: 0;
   background-color: #373737;
   border-radius: 2rem;
-  transition: width 300ms ease-in-out;
+  transition:  300ms ease-in-out ;
 }
 
 .searchBar:focus-within {
   width: 90%;
+  height: 110%;
 }
 
 .search {
@@ -116,7 +117,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 3rem;
+  padding: .1rem 3rem;
   flex-wrap: wrap;
   gap: 1rem;
 }
@@ -124,8 +125,15 @@ body {
 .dayInfo {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 2rem;
   min-width: 0;
+}
+
+.dayTempInfo{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
 }
 
 .weather-icon {
@@ -148,6 +156,18 @@ body {
   display: flex;
   align-items: baseline;
   gap: 0.25rem;
+  flex: 1 1 auto;
+}
+
+.dayTempFeels {
+  font-size: clamp(1.4rem, 0.6vw, 3rem);
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: -2px;
+  line-height: 1;
+  align-items: baseline;
+  height: 100px;
+  width: 150px;
 }
 
 .tempUnit {
@@ -215,12 +235,93 @@ body {
   overflow: hidden;
 }
 
-.weatherCard {
-  min-height: 100px;
+/* The Parent Container */
+.weatherInfo {
   width: 100%;
-  min-width: 0;
-  background-color: red;
-  border-radius: 0.5rem;
+  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 columns */
+  grid-template-rows: repeat(2, 1fr); /* 2 rows */
+  gap: 2rem 1rem; /* 2rem gap between rows, 1rem gap between columns */
+}
+
+/* The Individual Card */
+.weatherCard {
+  display: flex;
+  align-items: center; /* Aligns the icon and text horizontally */
+  gap: 1rem; /* Space between the icon and the text */
+}
+
+/* The icon container */
+.cardIcon {
+  font-size: 1.5rem; /* Size of the emoji/icon */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Wraps the Label and Value */
+.cardTextWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+/* The "Wind", "Humidity", etc. text */
+.cardLabel {
+  color: #b5b5b5; /* Light grey */
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* The "5.4 km/h", "86%", etc. text */
+.cardValue {
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin: 0.2rem 0 0 0;
+} /* The Parent Container */
+.weatherInfo {
+  width: 100%;
+  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 columns */
+  grid-template-rows: repeat(2, 1fr); /* 2 rows */
+  gap: 2rem 1rem; /* 2rem gap between rows, 1rem gap between columns */
+}
+
+/* The Individual Card */
+.weatherCard {
+  display: flex;
+  align-items: center; /* Aligns the icon and text horizontally */
+  gap: 1rem; /* Space between the icon and the text */
+}
+
+/* The icon container */
+.cardIconImg {
+  width: 75px;
+  height: 75px;
+  display: block;
+}
+
+/* Wraps the Label and Value */
+.cardTextWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+/* The "Wind", "Humidity", etc. text */
+.cardLabel {
+  color: #b5b5b5; /* Light grey */
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* The "5.4 km/h", "86%", etc. text */
+.cardValue {
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin: 0.2rem 0 0 0;
 }
 
 .hourlyInfo {
@@ -249,7 +350,6 @@ body {
   width: 100%;
   min-width: 0;
 }
-
 
 @media (max-width: 900px) {
   .content {
@@ -313,7 +413,6 @@ body {
     width: auto;
   }
 
-
   .topMidContent {
     flex-direction: column;
     align-items: center;
@@ -352,7 +451,6 @@ body {
     min-height: 120px;
   }
 }
-
 
 @media (max-width: 380px) {
   .dayTemp {
