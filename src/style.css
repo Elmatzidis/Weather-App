@@ -7,15 +7,17 @@
 body {
   margin: 0;
   background-color: #232323;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
+
 .main {
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-content: center;
 }
+
 .content {
-  /* background-color: blue; */
   height: 100vh;
   min-width: 60vw;
   display: flex;
@@ -23,10 +25,10 @@ body {
   padding: 0.5rem;
 }
 
+/* ===== Top bar: search + settings ===== */
 .topContent {
   height: 8vh;
   width: 100%;
-
   padding: 0.5rem;
   display: flex;
   justify-content: space-around;
@@ -40,72 +42,171 @@ body {
   width: 30%;
   background-color: #373737;
   border-radius: 2rem;
-  transition: 300ms ease-in-out;
+  transition: width 300ms ease-in-out;
 }
 
 .searchBar:focus-within {
   width: 90%;
 }
-/* This is the input inside the bar */
+
 .search {
   height: 100%;
   width: 20vw;
   flex-grow: 1;
-  font-size:clamp(0.5rem,1.2rem,2rem);
+  font-size: clamp(0.5rem, 1.2rem, 2rem);
   background-color: transparent;
   border: none;
   outline: none;
   color: #fff;
   margin-left: 1.5rem;
 }
+
+.search::placeholder {
+  color: #9a9a9a;
+}
+
 .searchIcon {
   height: 50px;
-  width: 50px; /* Use pixels instead of vw to keep it consistent */
+  width: 50px;
   background-image: url("Images/search.png");
   background-size: 25px 25px;
   background-repeat: no-repeat;
   background-position: center;
   margin-left: 2rem;
+  flex-shrink: 0;
 }
 
-.settings{
-    height: 50px;
-    width: 50px; /* Use pixels instead of vw to keep it consistent */
-    background-image: url("Images/settings.png");
-    background-size: 25px 25px;
-    background-repeat: no-repeat;
-    margin-left: auto;
-    background-position: center;
-    border-radius: 50%;
-    background-color: #373737;
-    transition: 250ms ease-in-out;
-    cursor: pointer;
-}
-.settings:hover{
-    background-color: #7b7a7a;
-    transform: rotate(180deg);
+.settings {
+  height: 50px;
+  width: 50px;
+  background-image: url("Images/settings.png");
+  background-size: 25px 25px;
+  background-repeat: no-repeat;
+  margin-left: auto;
+  background-position: center;
+  border-radius: 50%;
+  background-color: #373737;
+  transition: background-color 250ms ease-in-out, transform 250ms ease-in-out;
+  cursor: pointer;
 }
 
-.generalInfo {
+.settings:hover {
+  background-color: #7b7a7a;
+  transform: rotate(180deg);
+}
+
+.topMidContent {
   height: 20vh;
   width: 100%;
-  background-color: yellow;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 3rem;
 }
 
+.dayInfo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.weather-icon {
+  width: 200px;
+  height: 200px;
+}
+
+.dayIcon {
+  display: flex;
+}
+
+.dayTemp {
+  font-size: 5.5rem;
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: -2px;
+  line-height: 1;
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+}
+
+.tempUnit {
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.minMaxTemp {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+}
+
+.maxContent {
+  order: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.minConten {
+  order: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.maxContentText,
+.minContenText {
+  color: #c4c4c4;
+  font-size: 1rem;
+  text-transform: capitalize;
+  margin: 0 0 0.5rem 0;
+}
+
+.minTemp,
+.maxTemp {
+  color: #fff;
+  font-size: 2.5rem;
+  font-weight: 600;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+
+.weatherDescription,
+.feelsLike {
+  display: none;
+}
+
+/* ===== Lower sections ===== */
 .weatherInfo {
   height: 20vh;
   width: 100%;
-  background-color: gray;
+  background-color: #2d2d2d;
+  border-radius: 1rem;
 }
 
 .hourlyInfo {
   height: 20vh;
   width: 100%;
-  background-color: orange;
+  background-color: #2d2d2d;
+  border-radius: 1rem;
+  margin-top: 1rem;
 }
 
 .weekInfo {
   height: 25vh;
   width: 100%;
-  background-color: green;
+  background-color: #2d2d2d;
+  border-radius: 1rem;
+  margin-top: 1rem;
+}
+
+.weatherContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
