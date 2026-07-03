@@ -72,6 +72,11 @@ export function loadPage() {
   // Mid part of the content
   const midContent = elementBuilder("div", "midContent", weatherContainer);
   const weatherInfo = elementBuilder("div", "weatherInfo", midContent);
+  
+  for(let i =0 ;i<8;i++){
+    const weatherCard=elementBuilder("div","weatherCard",weatherInfo)
+    weatherCard.classList.add(`card${i}`)
+  }
 
   // Mid-lower part of the content
   const lowerMidContent = elementBuilder(
@@ -97,11 +102,11 @@ export function loadPage() {
 
       try {
         const response = await fetch(
-          `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${city}/today?key=${APIKey}&elements=temp,humidity,feelslike,precip,icon,tempmax,tempmin`,
+          `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${city}/today?key=${APIKey}&elements=temp,humidity,feelslike,precip,icon,tempmax,tempmin,windspeed,snow,pressure,sunrise,sunset,uvindex,precipprob,moonphase`,
         );
         const data = await response.json();
         const today = data.days[0];
-        const { temp, feelslike, precip, humidity, icon, tempmax, tempmin } =
+        const { temp, feelslike, precip, humidity, icon, tempmax, tempmin,windspeed,snow,pressure,sunrise,sunset,uvindex,precipprob,moonphase } =
           data.currentConditions;
         const condition = data.currentConditions.icon;
 
