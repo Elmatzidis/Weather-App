@@ -69,7 +69,7 @@ export function loadPage() {
   search.placeholder = "Search for a location...";
 
   const weatherContainer = elementBuilder("div", "weatherContainer", content);
-  weatherContainer.style.display = "none  ";
+  weatherContainer.style.display = "none";
 
   // Top mid part
   const topMidContent = elementBuilder(
@@ -77,11 +77,12 @@ export function loadPage() {
     "topMidContent",
     weatherContainer,
   );
+
   const dayInfo = elementBuilder("div", "dayInfo", topMidContent);
   const dayIcon = elementBuilder("div", "dayIcon", dayInfo);
   const dayTempInfo = elementBuilder("div", "dayTempInfo", dayInfo);
   const dayTemp = elementBuilder("div", "dayTemp", dayTempInfo);
-  const dayTempFeels=elementBuilder("div", "dayTempFeels", dayTempInfo);
+  const dayTempFeels = elementBuilder("div", "dayTempFeels", dayTempInfo);
 
   weatherIconEl = elementBuilder("img", "weather-icon", dayIcon);
   const minMaxTemp = elementBuilder("div", "minMaxTemp", topMidContent);
@@ -90,14 +91,14 @@ export function loadPage() {
   const maxContentText = elementBuilder("p", "maxContentText", maxContent);
   const maxEl = elementBuilder("div", "maxTemp", maxContent);
 
-  const minConten = elementBuilder("div", "minConten", minMaxTemp);
+  const minConten = elementBuilder("div", "minContent", minMaxTemp);
   const minContenText = elementBuilder("p", "minContenText", minConten);
   const minEl = elementBuilder("div", "minTemp", minConten);
 
   // Mid part of the content
   const midContent = elementBuilder("div", "midContent", weatherContainer);
   const weatherInfo = elementBuilder("div", "weatherInfo", midContent);
-
+  const hourlyText = elementBuilder("h1", "hourlyText", weatherContainer);
   // Mid-lower part of the content
   const lowerMidContent = elementBuilder(
     "div",
@@ -105,6 +106,9 @@ export function loadPage() {
     weatherContainer,
   );
   const hourlyInfo = elementBuilder("div", "hourlyInfo", lowerMidContent);
+
+  hourlyText.textContent = "Hourly Forecast";
+  const hourlyContent = elementBuilder("div", "hourlyContent", hourlyInfo);
 
   // Mid-bottom part of the content
   const bottomContent = elementBuilder(
@@ -123,7 +127,7 @@ export function loadPage() {
 
       try {
         const response = await fetch(
-          `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${encodeURIComponent(city)}/today?unitGroup=metric&key=${APIKey}&elements=temp,humidity,datetime,datetimeEpoch,feelslike,precip,icon,tempmax,tempmin,windspeed,windgust,snow,pressure,sunrise,sunset,uvindex,precipprob,moonphase`,
+          `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${encodeURIComponent(city)}?unitGroup=metric&key=${APIKey}&elements=temp,humidity,hours,datetime,datetimeEpoch,feelslike,precip,icon,tempmax,tempmin,windspeed,windgust,snow,pressure,sunrise,sunset,uvindex,precipprob,moonphase`,
         );
 
         if (!response.ok) {
@@ -134,29 +138,72 @@ export function loadPage() {
         const today = data.days[0];
         const cc = data.currentConditions;
         const condition = cc.icon;
+        const currentEpoch = cc.datetimeEpoch;
+        const allHours = [...data.days[0].hours, ...data.days[1].hours];
 
+        hourlyContent.innerHTML = " ";
+
+        const next12Hours = allHours
+          .filter((hourData) => hourData.datetimeEpoch > currentEpoch)
+          .slice(0, 12);
+        const iconPath = weatherIcons[condition];
+        if (weatherIconEl) weatherIconEl.src = iconPath;
+
+        next12Hours.forEach((hourData) => {
+
+          const hourlyCards = elementBuilder(
+            "div",
+            "hourlyCards",
+            hourlyContent,
+          );
+          const dateObj = new Date(hourData.datetimeEpoch * 1000);
+          const formattedTime = dateObj.toLocaleTimeString([], {
+            hour: "numeric",
+            hour12: true,
+          });
+          const timeCard = elementBuilder("p", "timeCard", hourlyCards);
+          const weatherCard=elementBuilder("img","weatherCard",hourlyCards)
+          timeCard.textContent = formattedTime;
+          weatherCard.src=weatherIcons[hourData.icon]
+        });
         const temp = cc.temp;
         const tempmax = today.tempmax;
         const tempmin = today.tempmin;
 
-        const iconPath = weatherIcons[condition];
-        if (weatherIconEl) weatherIconEl.src = iconPath;
-
         const detailedInfo = [
-          { label: "Chance of rain", value: Math.round(today.precipprob) + "%", icon: rain },
-          { label: "Wind", value: Math.round(cc.windspeed) + " km/h", icon: wind },
+          {
+            label: "Chance of rain",
+            value: Math.round(today.precipprob) + "%",
+            icon: rain,
+          },
+          {
+            label: "Wind",
+            value: Math.round(cc.windspeed) + " km/h",
+            icon: wind,
+          },
           { label: "Sunrise", value: cc.sunrise, icon: sunrise },
           { label: "Sunset", value: cc.sunset, icon: sunset },
           { label: "UV Index", value: cc.uvindex, icon: uvindex },
-          { label: "Pressure", value: Math.round(cc.pressure) + " mb", icon: pressure },
-          { label: "Humidity", value: Math.round(cc.humidity) + "%", icon: humidity },
-          { label: "Gusts", value: Math.round(cc.windgust ?? 0) + " km/h", icon: wind },
+          {
+            label: "Pressure",
+            value: Math.round(cc.pressure) + " mb",
+            icon: pressure,
+          },
+          {
+            label: "Humidity",
+            value: Math.round(cc.humidity) + "%",
+            icon: humidity,
+          },
+          {
+            label: "Gusts",
+            value: Math.round(cc.windgust ?? 0) + " km/h",
+            icon: wind,
+          },
         ];
 
         // Clear old cards before rendering new ones
         weatherInfo.innerHTML = "";
-        console.log("Observed at:", cc.datetime, cc.datetimeEpoch);
-        console.log("RAW windgust:", cc.windgust, "RAW windspeed:", cc.windspeed);
+
         detailedInfo.forEach((detail) => {
           const weatherCard = elementBuilder("div", "weatherCard", weatherInfo);
 
@@ -186,6 +233,7 @@ export function loadPage() {
         minContenText.textContent = "min";
 
         weatherContainer.style.display = "block";
+
       } catch (error) {
         console.error("Something went wrong:", error);
       }
