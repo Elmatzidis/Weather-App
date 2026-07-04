@@ -111,15 +111,17 @@ body {
 }
 
 .topMidContent {
-  height: auto;
-  min-height: 20vh;
+  /* height: auto; */
+  min-height: 10vh;
+  height: 15vh;
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.1rem 3rem;
+  padding: 0 2rem;
   flex-wrap: wrap;
   gap: 1rem;
+  /* background-color: red; */
 }
 
 .dayInfo {
@@ -160,9 +162,9 @@ body {
 }
 
 .dayTempFeels {
-  font-size: clamp(1.4rem, 0.6vw, 3rem);
+  font-size: clamp(1.3rem, 0.6vw, 5rem);
   color: #fff;
-  font-weight: 700;
+  font-weight: 300;
   letter-spacing: -2px;
   line-height: 1;
   align-items: baseline;
@@ -223,7 +225,7 @@ body {
 
 .weatherInfo {
   width: 100%;
-  min-height: 25vh;
+  min-height: 20vh;
   margin-top: 2rem;
   background-color: #2d2d2d;
   border-radius: 1rem;
@@ -240,6 +242,7 @@ body {
   display: flex;
   align-items: center;
   gap: 1rem;
+  /* flex:  1  1; */
 }
 
 .cardIconImg {
@@ -295,24 +298,93 @@ body {
 
 .hourlyCards {
   border-radius: 1rem;
-  height: 120px;
-  min-width: 120px;
+  height: 100px;
+  min-width: 100px;
+  flex: 1 1 ;
   background-color: #2d2d2d;
 }
 
 .hourlyCards img {
   height: 65px;
   width: 100%;
+  position: relative;
+  bottom: 1rem;
 }
 
 .weekInfo {
-  height: 20vh;
-  min-height: 100px;
+  height: auto;
+  min-height: 140px;
   width: 100%;
-  background-color: #2d2d2d;
   border-radius: 1rem;
   margin-top: 1rem;
-  overflow: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: stretch;
+  gap: 12px;
+  
+}
+
+.weekCard {
+  background-color: #2d2d2d;
+  border-radius: 1rem;
+  min-width: 110px;
+  flex: 1 1 110px;
+  padding: 14px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  
+}
+
+.weekTitle{
+  color: #fff;
+  font-size: 1.6rem;
+}
+
+.weekCard.today {
+  border: 2px solid #ffffff;
+}
+
+.todayLabel {
+  font-size: 0.75rem;
+  color: #ffffff;
+  font-weight: 600;
+  margin: 0 0 2px 0;
+  min-height: 1rem;
+}
+
+.weekDay {
+  font-size: 0.85rem;
+  color: #c4c4c4;
+  margin: 0 0 6px 0;
+  font-weight: 400;
+}
+
+.weekIcon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  margin-bottom: 8px;
+}
+
+.weekTemp {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.weekTempMax {
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.weekTempMin {
+  color: #9a9a9a;
+  font-size: 1rem;
+  font-weight: 500;
 }
 
 .weatherContainer {

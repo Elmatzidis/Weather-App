@@ -69,7 +69,7 @@ export function loadPage() {
   search.placeholder = "Search for a location...";
 
   const weatherContainer = elementBuilder("div", "weatherContainer", content);
-  weatherContainer.style.display = "none";
+  weatherContainer.style.display = "block";
 
   // Top mid part
   const topMidContent = elementBuilder(
@@ -109,14 +109,11 @@ export function loadPage() {
 
   hourlyText.textContent = "Hourly Forecast";
   const hourlyContent = elementBuilder("div", "hourlyContent", hourlyInfo);
-
+  const weekTitle=elementBuilder("h1","weekTitle",weatherContainer)
   // Mid-bottom part of the content
-  const bottomContent = elementBuilder(
-    "div",
-    "bottomContent",
-    weatherContainer,
-  );
+  const bottomContent = elementBuilder("div","bottomContent",weatherContainer,);
   const weekInfo = elementBuilder("div", "weekInfo", bottomContent);
+
 
   // Searches the city which the user want to get the info from
   search.addEventListener("keypress", async (e) => {
@@ -141,6 +138,7 @@ export function loadPage() {
         const currentEpoch = cc.datetimeEpoch;
         const allHours = [...data.days[0].hours, ...data.days[1].hours];
 
+        weekInfo.innerHTML=" ";
         hourlyContent.innerHTML = " ";
 
         const next12Hours = allHours
@@ -166,6 +164,38 @@ export function loadPage() {
           timeCard.textContent = formattedTime;
           weatherCard.src=weatherIcons[hourData.icon]
         });
+
+        const daysToShow = 7;
+const nextDays = data.days.slice(1, daysToShow); // fixed: was cutting off day 6
+nextDays.forEach((dayData, index) => {
+  const date = new Date(dayData.datetime + "T00:00:00");
+  const dayName = date.toLocaleDateString("en-US", {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+  });
+  const isToday = index === 0;
+
+  const weekCard = elementBuilder("div", "weekCard", weekInfo);
+  if (isToday) weekCard.classList.add("today");
+
+  const todayLabel = elementBuilder("p", "todayLabel", weekCard);
+  todayLabel.textContent = isToday ? "Today" : "";
+
+  const weekDay = elementBuilder("p", "weekDay", weekCard);
+  weekDay.textContent = dayName;
+
+  const weekIcon = elementBuilder("img", "weekIcon", weekCard);
+  weekIcon.src = weatherIcons[dayData.icon];
+
+  const weekTemp = elementBuilder("div", "weekTemp", weekCard);
+  const weekTempMax = elementBuilder("span", "weekTempMax", weekTemp);
+  const weekTempMin = elementBuilder("span", "weekTempMin", weekTemp);
+
+  weekTempMax.textContent = `${Math.round(dayData.tempmax)}°`;
+  weekTempMin.textContent = `${Math.round(dayData.tempmin)}°`;
+});
+        
         const temp = cc.temp;
         const tempmax = today.tempmax;
         const tempmin = today.tempmin;
@@ -231,6 +261,8 @@ export function loadPage() {
 
         maxContentText.textContent = "max";
         minContenText.textContent = "min";
+
+        weekTitle.textContent="This week";
 
         weatherContainer.style.display = "block";
 
