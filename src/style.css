@@ -68,8 +68,8 @@ body {
   display: flex;
   align-items: center;
   height: 90%;
-  width: 30%;
-  min-width: 0;
+  width: 80%;
+  min-width: 50%;
   background-color: var(--surface-alt);
   border-radius: 2rem;
   transition: 300ms ease-in-out;
@@ -123,7 +123,7 @@ body {
     background-color 250ms ease-in-out,
     transform 250ms ease-in-out;
   cursor: pointer;
-  box-shadow: 0 0 5px solid black ;
+  box-shadow: 0 0 5px solid black;
 }
 
 .settings:hover {
@@ -189,8 +189,9 @@ body {
 
 .topMidContent {
   min-height: 10vh;
-  height: 15vh;
+  height: auto;
   width: 100%;
+  min-width: 300px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -228,7 +229,6 @@ body {
   font-size: clamp(2.5rem, 6vw, 5.5rem);
   color: var(--text-primary);
   font-weight: 700;
-  letter-spacing: -2px;
   line-height: 1;
   display: flex;
   align-items: baseline;
@@ -478,15 +478,26 @@ body {
   }
 
   .topMidContent {
-    padding: 1rem 1.5rem;
+    flex-wrap: nowrap;
   }
 
   .minMaxTemp {
-    gap: 1.5rem;
+    gap: 1.5rem ;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    width: 100%;
+    margin-left: 2rem;
+  }
+
+  .dayInfo{
+    width: 100%;
   }
 
   .weatherInfo {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .searchBar{
+    width: 600px;
   }
 }
 
@@ -510,13 +521,13 @@ body {
   }
 
   .topContent {
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     height: auto;
     gap: 0.75rem;
   }
 
   .searchBar {
-    width: 100%;
+    width: 550px;
     order: 1;
   }
 
@@ -529,15 +540,9 @@ body {
     margin-left: 0;
   }
 
-  .settingsPanel {
-    top: auto;
-    right: 0.5rem;
-    left: 0.5rem;
-    width: auto;
-  }
 
   .search {
-    width: auto;
+    width: 100%;
   }
 
   .topMidContent {
@@ -545,10 +550,13 @@ body {
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 1.5rem 1rem;
+    padding: .5rem 1rem;
     gap: 1.5rem;
   }
 
+  .dayInfo{
+    height: 100px;
+  }
   .weather-icon {
     width: 120px;
     height: 120px;
@@ -565,7 +573,7 @@ body {
 
   .minTemp,
   .maxTemp {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
   }
 
   .weatherInfo {
@@ -576,6 +584,27 @@ body {
   .weekInfo {
     height: auto;
     min-height: 120px;
+  }
+
+  .hourlyContent{
+    display: flex;
+    justify-content: center;
+  }
+
+  .hourlyCards{
+    height: 100px;
+    min-width: 150px;
+    flex:  1 1 auto;
+  }
+
+  .weatherInfo{
+    gap: 1rem;
+    background-color: transparent;
+  }
+  .weatherCard{
+    background-color: var(--surface);
+    border-radius: 1rem;
+    padding: 1rem;
   }
 }
 
@@ -593,17 +622,94 @@ body {
     height: 90px;
   }
 
-  .hourlyCards{
+  .hourlyCards {
     min-width: 150px;
   }
 
-  .weatherInfo{
+  .weatherInfo {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(4, 1fr);
   }
 
-  .weatherCard{
+  .weatherCard {
     flex-direction: column;
+    width: 100%;
+   
   }
-  
+
+  .dayTempFeels {
+    height: 25px;
+    width: 100%;
+  }
+
+  .minMaxTemp {
+    display: flex;
+    width: 100%;
+    gap: 3rem;
+    justify-content: space-around;
+  }
+
+  .dayInfo {
+    width: 100%;
+    /* justify-content: space-around; */
+  }
+
+  .dayIcon {
+    height: 120px;
+    width: 150px;
+  }
+  .weather-icon {
+    width: 100%;
+    height: 100%;
+  }
+
+  .dayTempInfo {
+    text-align: start;
+  }
+
+  .topMidContent {
+    padding: 0;
+  }
+  .searchBar {
+    width: 70%;
+    max-width: 75%;
+  }
+
+  .searchBar:focus-within {
+    width: 300px;
+  }
+
+  .searchIcon {
+    margin-left: 0;
+  }
+  .search {
+    width: 100%;
+    text-align: start;
+    
+  }
+
+  .search::placeholder{
+    position: relative;
+    overflow: visible;
+    right: 1rem;
+  }
+  .topContent {
+    flex-wrap: nowrap;
+  }
+  .settingsPanel{
+    position: absolute;
+    top: 5rem;
+  }
+
+  .hourlyContent{
+    justify-content: center;
+    gap: 2rem .7rem;
+  }
+  .hourlyCards img{
+    height: 80px;
+    height: 80px;
+  }
+  .weekInfo{
+    gap: 1.2rem 1rem;
+  }
 }
