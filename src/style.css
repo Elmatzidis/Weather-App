@@ -4,17 +4,36 @@
   box-sizing: border-box;
 }
 
-html {
-  height: 100%;
+:root {
+  --bg: #232323;
+  --surface: #2d2d2d;
+  --surface-alt: #373737;
+  --text-primary: #fff;
+  --text-secondary: #c4c4c4;
+  --text-muted: #9a9a9a;
+  --accent: #4da3ff;
+  --border: #4a4a4a;
+}
+
+body[data-theme="light"] {
+  --bg: #c1c2c4d2;
+  --surface: rgb(126, 177, 192);
+  --surface-alt: #9fa1a5;
+  --text-primary: #232a38;
+  --text-secondary: #5b6478;
+  --text-muted: #8890a0;
+  --accent: #3366ff;
+  --border: #cbd2e0;
 }
 
 body {
   margin: 0;
   min-height: 100%;
-  background-color: #232323;
+  background-color: var(--bg);
   font-family:
     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
     sans-serif;
+  transition: background-color 250ms ease-in-out;
 }
 
 .main {
@@ -42,6 +61,7 @@ body {
   justify-content: space-around;
   align-items: center;
   gap: 1rem;
+  position: relative;
 }
 
 .searchBar {
@@ -50,7 +70,7 @@ body {
   height: 90%;
   width: 30%;
   min-width: 0;
-  background-color: #373737;
+  background-color: var(--surface-alt);
   border-radius: 2rem;
   transition: 300ms ease-in-out;
 }
@@ -69,12 +89,12 @@ body {
   background-color: transparent;
   border: none;
   outline: none;
-  color: #fff;
+  color: var(--text-primary);
   margin-left: 1.5rem;
 }
 
 .search::placeholder {
-  color: #9a9a9a;
+  color: var(--text-muted);
 }
 
 .searchIcon {
@@ -98,11 +118,12 @@ body {
   background-position: center;
   margin-left: auto;
   border-radius: 50%;
-  background-color: #373737;
+  background-color: var(--surface-alt) !important;
   transition:
     background-color 250ms ease-in-out,
     transform 250ms ease-in-out;
   cursor: pointer;
+  box-shadow: 0 0 5px solid black ;
 }
 
 .settings:hover {
@@ -110,8 +131,63 @@ body {
   transform: rotate(180deg);
 }
 
+/* --- Settings panel --- */
+.settingsPanel {
+  position: absolute;
+  top: 70px;
+  right: 1rem;
+  background-color: var(--surface-alt);
+  border-radius: 1rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  z-index: 10;
+  min-width: 220px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.settingRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.settingLabel {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.toggleGroup {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.toggleBtn {
+  flex: 1;
+  padding: 0.5rem 0;
+  border: 1px solid var(--border, transparent);
+  border-radius: 0.5rem;
+  background-color: var(--surface);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition:
+    background-color 200ms ease-in-out,
+    color 200ms ease-in-out;
+}
+
+.toggleBtn:hover {
+  background-color: #4a4a4a;
+}
+
+.toggleBtn.active {
+  background-color: var(--accent);
+  color: #fff;
+}
+
 .topMidContent {
-  /* height: auto; */
   min-height: 10vh;
   height: 15vh;
   width: 100%;
@@ -121,7 +197,6 @@ body {
   padding: 0 2rem;
   flex-wrap: wrap;
   gap: 1rem;
-  /* background-color: red; */
 }
 
 .dayInfo {
@@ -151,7 +226,7 @@ body {
 
 .dayTemp {
   font-size: clamp(2.5rem, 6vw, 5.5rem);
-  color: #fff;
+  color: var(--text-primary);
   font-weight: 700;
   letter-spacing: -2px;
   line-height: 1;
@@ -163,7 +238,7 @@ body {
 
 .dayTempFeels {
   font-size: clamp(1.3rem, 0.6vw, 5rem);
-  color: #fff;
+  color: var(--text-primary);
   font-weight: 300;
   letter-spacing: -2px;
   line-height: 1;
@@ -175,7 +250,7 @@ body {
 .tempUnit {
   font-size: 2.5rem;
   font-weight: 600;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .minMaxTemp {
@@ -201,7 +276,7 @@ body {
 
 .maxContentText,
 .minContenText {
-  color: #c4c4c4;
+  color: var(--text-secondary);
   font-size: 1rem;
   text-transform: capitalize;
   margin: 0 0 0.5rem 0;
@@ -209,7 +284,7 @@ body {
 
 .minTemp,
 .maxTemp {
-  color: #fff;
+  color: var(--text-primary);
   font-size: 2.5rem;
   font-weight: 600;
   white-space: nowrap;
@@ -227,7 +302,7 @@ body {
   width: 100%;
   min-height: 20vh;
   margin-top: 2rem;
-  background-color: #2d2d2d;
+  background-color: var(--surface);
   border-radius: 1rem;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -236,13 +311,13 @@ body {
   padding: 1rem;
   overflow: hidden;
   font-weight: bolder;
+  transition: background-color 250ms ease-in-out;
 }
 
 .weatherCard {
   display: flex;
   align-items: center;
   gap: 1rem;
-  /* flex:  1  1; */
 }
 
 .cardIconImg {
@@ -257,13 +332,13 @@ body {
 }
 
 .cardLabel {
-  color: #b5b5b5;
+  color: var(--text-secondary);
   font-size: 0.9rem;
   margin: 0;
 }
 
 .cardValue {
-  color: #fff;
+  color: var(--text-primary);
   font-size: 1.2rem;
   font-weight: 500;
   margin: 0.2rem 0 0 0;
@@ -277,14 +352,14 @@ body {
 
 .hourlyText {
   font-size: 1.6rem;
-  color: #fff;
+  color: var(--text-primary);
   text-align: start;
   margin-left: 1rem;
 }
 
 .timeCard {
   font-size: 1rem;
-  color: #fff;
+  color: var(--text-primary);
   text-align: center;
 }
 
@@ -300,8 +375,8 @@ body {
   border-radius: 1rem;
   height: 100px;
   min-width: 100px;
-  flex: 1 1 ;
-  background-color: #2d2d2d;
+  background-color: var(--surface);
+  transition: background-color 250ms ease-in-out;
 }
 
 .hourlyCards img {
@@ -311,6 +386,7 @@ body {
   bottom: 1rem;
 }
 
+/* --- Weekly forecast: Option C (today highlighted) --- */
 .weekInfo {
   height: auto;
   min-height: 140px;
@@ -322,11 +398,16 @@ body {
   justify-content: space-around;
   align-items: stretch;
   gap: 12px;
-  
+}
+
+.weekTitle {
+  font-size: 1.6rem;
+  color: var(--text-primary);
+  font-weight: bolder;
 }
 
 .weekCard {
-  background-color: #2d2d2d;
+  background-color: var(--surface);
   border-radius: 1rem;
   min-width: 110px;
   flex: 1 1 110px;
@@ -335,21 +416,17 @@ body {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  
-}
-
-.weekTitle{
-  color: #fff;
-  font-size: 1.6rem;
+  border: 2px solid transparent;
+  transition: background-color 250ms ease-in-out;
 }
 
 .weekCard.today {
-  border: 2px solid #ffffff;
+  border-color: var(--accent);
 }
 
 .todayLabel {
   font-size: 0.75rem;
-  color: #ffffff;
+  color: var(--accent);
   font-weight: 600;
   margin: 0 0 2px 0;
   min-height: 1rem;
@@ -357,7 +434,7 @@ body {
 
 .weekDay {
   font-size: 0.85rem;
-  color: #c4c4c4;
+  color: var(--text-secondary);
   margin: 0 0 6px 0;
   font-weight: 400;
 }
@@ -376,13 +453,13 @@ body {
 }
 
 .weekTempMax {
-  color: #fff;
+  color: var(--text-primary);
   font-size: 1rem;
   font-weight: 500;
 }
 
 .weekTempMin {
-  color: #9a9a9a;
+  color: var(--text-primary);
   font-size: 1rem;
   font-weight: 500;
 }
@@ -452,6 +529,13 @@ body {
     margin-left: 0;
   }
 
+  .settingsPanel {
+    top: auto;
+    right: 0.5rem;
+    left: 0.5rem;
+    width: auto;
+  }
+
   .search {
     width: auto;
   }
@@ -508,4 +592,18 @@ body {
     width: 90px;
     height: 90px;
   }
+
+  .hourlyCards{
+    min-width: 150px;
+  }
+
+  .weatherInfo{
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+  }
+
+  .weatherCard{
+    flex-direction: column;
+  }
+  
 }
