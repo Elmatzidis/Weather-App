@@ -16,7 +16,7 @@ export function buildLayout(root, index) {
   search.placeholder = "Search for a location...";
 
   const weatherContainer = elementBuilder("div", "weatherContainer", content);
-  weatherContainer.style.display = "BLOCK";
+  weatherContainer.style.display = "none";
 
   // Top mid part
   const topMidContent = elementBuilder(
