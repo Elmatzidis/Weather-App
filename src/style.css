@@ -418,6 +418,7 @@ body {
   text-align: center;
   border: 2px solid transparent;
   transition: background-color 250ms ease-in-out;
+  cursor: pointer;
 }
 
 .weekCard.today {
@@ -651,7 +652,6 @@ body {
 
   .dayInfo {
     width: 100%;
-    /* justify-content: space-around; */
   }
 
   .dayIcon {
