@@ -18,7 +18,7 @@
 body[data-theme="light"] {
   --bg: #c1c2c4d2;
   --surface: rgb(126, 177, 192);
-  --surface-alt: #9fa1a5;
+  --surface-alt: #a2c0c0;
   --text-primary: #232a38;
   --text-secondary: #5b6478;
   --text-muted: #8890a0;
@@ -34,6 +34,7 @@ body {
     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
     sans-serif;
   transition: background-color 250ms ease-in-out;
+   top: 0px !important; 
 }
 
 .main {
@@ -90,12 +91,54 @@ body {
   border: none;
   outline: none;
   color: var(--text-primary);
-  margin-left: 1.5rem;
+  margin-left: .8rem;
 }
 
 .search::placeholder {
   color: var(--text-muted);
 }
+
+.VIpgJd-ZVi9od-ORHb-OEVmcd,
+.VIpgJd-ZVi9od-l4eHX-hSRGPd,
+.VIpgJd-yAWNEb-L7lbkb,
+.VIpgJd-ZVi9od-aZ2wEe-wOHMyf-ti6hGc {
+    display: none !important;
+}
+
+
+#google_translate_element {
+    background: var(--surface)!important;
+    border: var(--border)!important;
+    border-radius: 6px !important;
+    padding: 6px 10px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    color: #fff !important;
+}
+
+.goog-te-gadget-simple {
+    background-color: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    font-family: inherit !important;
+}
+
+.VIpgJd-ZVi9od-xl07Ob-lTBxed span {
+    color: #ffffff !important;
+    font-size: 1rem !important;
+}
+
+.goog-logo-link,
+.goog-te-gadget-icon {
+    display: none !important;
+}
+
 
 .searchIcon {
   height: 50px;
@@ -598,6 +641,12 @@ body {
     flex:  1 1 auto;
   }
 
+ .search::placeholder{
+    position: relative;
+    left: -4px;
+    font-size: 1.1rem;
+  }
+
   .weatherInfo{
     gap: 1rem;
     background-color: transparent;
@@ -690,8 +739,8 @@ body {
 
   .search::placeholder{
     position: relative;
-    overflow: visible;
-    right: 1rem;
+    left: -3px;
+    font-size: 1rem;
   }
   .topContent {
     flex-wrap: nowrap;

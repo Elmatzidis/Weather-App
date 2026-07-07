@@ -15,6 +15,12 @@ export function buildLayout(root, index) {
   const search = elementBuilder("input", "search", searchWrapper);
   search.placeholder = "Search for a location...";
 
+  const translator = elementBuilder(
+    "div",
+    "google_translate_element",
+    topContent,
+  );
+
   const weatherContainer = elementBuilder("div", "weatherContainer", content);
   weatherContainer.style.display = "none";
 
@@ -89,6 +95,29 @@ export function buildLayout(root, index) {
   lightBtn.type = "button";
   lightBtn.textContent = "Light";
 
+
+    window.googleTranslateElementInit = function() {
+  new google.translate.TranslateElement(
+    {
+      pageLanguage: "en",
+      includedLanguages: "en,el,es,fr,de,it,ru",
+      layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+    },
+    "google_translate_element"
+  );
+};
+
+const translatorDiv = document.createElement("div");
+translatorDiv.id = "google_translate_element";
+settingsPanel.appendChild(translatorDiv);
+
+const transScript = document.createElement("script");
+transScript.src = "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+transScript.async = true;
+document.head.appendChild(transScript);
+
+
+
   return {
     search,
     settings,
@@ -111,5 +140,3 @@ export function buildLayout(root, index) {
     lightBtn,
   };
 }
-
-
