@@ -58,7 +58,7 @@ export function loadPage() {
     });
 
     const daysToShow = 7;
-    const nextDays = data.days.slice(1, daysToShow);
+    const nextDays = data.days.slice(0, daysToShow);
     nextDays.forEach((dayData, index) => {
       const indexOf = index;
       const date = new Date(dayData.datetime + "T00:00:00");
@@ -191,30 +191,98 @@ export function loadPage() {
   dom.lightBtn.addEventListener("click", () => setTheme("light"));
   setTheme("dark");
 
-  // Searches the city which the user want to get the info from
-  dom.search.addEventListener("keypress", async (e) => {
+  // 1. Define the function FIRST
+  // --- Fetching Logic ---
+  // --- Fetching Logic ---
+
+  function getUserLocation() {
+    if (!navigator.geolocation) {
+      console.error("Geolocation is not supported by this browser");
+      fetchDefaultCityWeather();
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        fetchWeatherByCoordinates(latitude, longitude);
+      },
+      (error) => {
+        console.error("Geolocation error:", error.message);
+        fetchDefaultCityWeather(); // user denied permission, timeout, etc.
+      },
+      {
+        enableHighAccuracy: false, 
+        timeout: 3000, 
+      },
+    );
+  }
+
+  async function reverseGeocode(lat, lon) {
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`,
+    );
+    if (!response.ok) throw new Error("Reverse geocoding failed");
+    const data = await response.json();
+    return (
+      data.address.city ||
+      data.address.town ||
+      data.address.village ||
+      data.address.county ||
+      "Unknown location"
+    );
+  }
+
+  async function fetchWeatherByCoordinates(lat, lon) {
+    const APIKey = "B5EQMXUEUKGZYBEXWMRKQRW7M";
+    try {
+      const [weatherResponse, cityName] = await Promise.all([
+        fetch(
+          `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${lat},${lon}?unitGroup=metric&key=${APIKey}&elements=temp,humidity,hours,datetime,datetimeEpoch,feelslike,precip,icon,tempmax,tempmin,windspeed,windgust,snow,pressure,sunrise,sunset,uvindex,precipprob,moonphase`,
+        ),
+        reverseGeocode(lat, lon).catch(() => null), 
+      ]);
+
+      if (!weatherResponse.ok) throw new Error("Location weather not found");
+
+      const data = await weatherResponse.json();
+      currentWeatherData = data;
+      renderWeather(data);
+
+      dom.search.value = cityName || data.resolvedAddress;
+    } catch (error) {
+      console.error("Coordinate fetch failed:", error);
+      fetchDefaultCityWeather(); 
+    }
+  }
+
+  async function fetchDefaultCityWeather(city = "Thessaloniki") {
+    const APIKey = "B5EQMXUEUKGZYBEXWMRKQRW7M";
+    try {
+      const response = await fetch(
+        `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${encodeURIComponent(city)}?unitGroup=metric&key=${APIKey}&elements=temp,humidity,hours,datetime,datetimeEpoch,feelslike,precip,icon,tempmax,tempmin,windspeed,windgust,snow,pressure,sunrise,sunset,uvindex,precipprob,moonphase`,
+      );
+
+      if (!response.ok)
+        throw new Error(`City not found (status ${response.status})`);
+
+      const data = await response.json();
+      currentWeatherData = data;
+      renderWeather(data);
+      dom.search.value = city;
+    } catch (error) {
+      console.error("Something went wrong:", error);
+      alert(error.message);
+    }
+  }
+
+  dom.search.addEventListener("keypress", (e) => {
     if (e.key === "Enter") {
       const city = dom.search.value.trim();
-      if (!city) return;
-      const APIKey = "B5EQMXUEUKGZYBEXWMRKQRW7M";
-
-      try {
-        const response = await fetch(
-          `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${encodeURIComponent(city)}?unitGroup=metric&key=${APIKey}&elements=temp,humidity,hours,datetime,datetimeEpoch,feelslike,precip,icon,tempmax,tempmin,windspeed,windgust,snow,pressure,sunrise,sunset,uvindex,precipprob,moonphase`,
-        );
-
-        if (!response.ok) {
-          throw new Error(`City not found (status ${response.status})`);
-        }
-
-        const data = await response.json();
-        currentWeatherData = data;
-        renderWeather(data);
-      } catch (error) {
-        console.error("Something went wrong:", error);
-        alert(error.message);
-      }
+      if (city) fetchDefaultCityWeather(city);
     }
   });
+
+  getUserLocation();
 }
 loadPage();
