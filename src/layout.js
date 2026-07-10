@@ -20,7 +20,8 @@ export function buildLayout(root, index) {
     "google_translate_element",
     topContent,
   );
-
+   
+  const loading = elementBuilder("div", "loading",content);
   const weatherContainer = elementBuilder("div", "weatherContainer", content);
   weatherContainer.style.display = "none";
 

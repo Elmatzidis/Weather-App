@@ -15,6 +15,9 @@ let currentWeatherData = null;
 
 export function loadPage() {
   const dom = buildLayout(document.body);
+  const loading = document.querySelector(".loading");
+  const weatherContainer = document.querySelector(".weatherContainer");
+  loading.style.display = "none";
 
   // Renders all weather data into the DOM. Called on fetch, and again
   // whenever the unit toggle changes (using the last-fetched data).
@@ -212,8 +215,8 @@ export function loadPage() {
         fetchDefaultCityWeather(); // user denied permission, timeout, etc.
       },
       {
-        enableHighAccuracy: false, 
-        timeout: 3000, 
+        enableHighAccuracy: false,
+        timeout: 3000,
       },
     );
   }
@@ -240,7 +243,7 @@ export function loadPage() {
         fetch(
           `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${lat},${lon}?unitGroup=metric&key=${APIKey}&elements=temp,humidity,hours,datetime,datetimeEpoch,feelslike,precip,icon,tempmax,tempmin,windspeed,windgust,snow,pressure,sunrise,sunset,uvindex,precipprob,moonphase`,
         ),
-        reverseGeocode(lat, lon).catch(() => null), 
+        reverseGeocode(lat, lon).catch(() => null),
       ]);
 
       if (!weatherResponse.ok) throw new Error("Location weather not found");
@@ -252,28 +255,37 @@ export function loadPage() {
       dom.search.value = cityName || data.resolvedAddress;
     } catch (error) {
       console.error("Coordinate fetch failed:", error);
-      fetchDefaultCityWeather(); 
+      fetchDefaultCityWeather();
     }
   }
 
-  async function fetchDefaultCityWeather(city = "Thessaloniki") {
+  async function fetchDefaultCityWeather(city="Thessaloniki") {
     const APIKey = "B5EQMXUEUKGZYBEXWMRKQRW7M";
-    try {
-      const response = await fetch(
-        `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${encodeURIComponent(city)}?unitGroup=metric&key=${APIKey}&elements=temp,humidity,hours,datetime,datetimeEpoch,feelslike,precip,icon,tempmax,tempmin,windspeed,windgust,snow,pressure,sunrise,sunset,uvindex,precipprob,moonphase`,
-      );
+    loading.style.display = "block";
+    weatherContainer.style.display = "none";
 
-      if (!response.ok)
-        throw new Error(`City not found (status ${response.status})`);
-
-      const data = await response.json();
-      currentWeatherData = data;
-      renderWeather(data);
-      dom.search.value = city;
-    } catch (error) {
-      console.error("Something went wrong:", error);
-      alert(error.message);
-    }
+    fetch(
+      `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${encodeURIComponent(city)}?unitGroup=metric&key=${APIKey}&elements=temp,humidity,hours,datetime,datetimeEpoch,feelslike,precip,icon,tempmax,tempmin,windspeed,windgust,snow,pressure,sunrise,sunset,uvindex,precipprob,moonphase`,
+    )
+      .then(function (response) {
+        if (!response.ok) throw new Error(`City not found`);
+        return response.json();
+      })
+      .then(function (data) {
+        // Only hide the loader and show the container after 500ms
+        setTimeout(function () {
+          loading.style.display = "none";
+          currentWeatherData = data;
+          renderWeather(data);
+          dom.search.value = city;
+          weatherContainer.classList.add("visible");
+        }, 200);
+      })
+      .catch(function (error) {
+        loading.style.display = "none"; // Hide loader on error
+        console.error("Something went wrong:", error);
+        alert(error.message);
+      });
   }
 
   dom.search.addEventListener("keypress", (e) => {
