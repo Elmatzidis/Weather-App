@@ -74,6 +74,7 @@ body {
   background-color: var(--surface-alt);
   border-radius: 2rem;
   transition: 300ms ease-in-out;
+  position: relative;
 }
 
 .searchBar:focus-within {
@@ -506,6 +507,39 @@ body {
   color: var(--text-primary);
   font-size: 1rem;
   font-weight: 500;
+}
+
+.suggestedCities {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 100%;
+  background: var(--surface-alt); 
+  max-height: 220px;
+  overflow-y: auto; 
+  z-index: 100;  
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3); 
+  padding: 0.5rem 0;
+  display: none;
+}
+
+.suggestion-item {
+  padding: 12px 20px;
+  cursor: pointer;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  border: none;
+  background-color: transparent;
+  width: 100%;
+  text-align: start;
+  font-size: 0.95rem;
+  transition: background-color 0.2s ease;
+}
+
+.suggestion-item:hover {
+  background-color: var(--surface); 
 }
 
 .weatherContainer {

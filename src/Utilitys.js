@@ -1,3 +1,4 @@
+// This function builds the element add a class and then appends it to the desired parent we want 
 export function elementBuilder(type, className, parent) {
   const element = document.createElement(type);
   if (className) element.classList.add(className);
@@ -5,6 +6,9 @@ export function elementBuilder(type, className, parent) {
   return element;
 }
 
+
+// These function convert the untit "mph" or "km/h" of speed and the temperature 
+// "°F" or "°C"
 let unitSystem = "metric";
 
 export function convertTemp(celsius,unitSystem) {

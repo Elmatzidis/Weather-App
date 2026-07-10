@@ -2,12 +2,11 @@ import { weatherIcons } from "./Icons.js";
 import { elementBuilder } from "./Utilitys.js";
 
 // Builds the page skeleton and returns references to every element
-// script.js needs to touch later (rendering weather, wiring settings, etc).
 export function buildLayout(root, index) {
   const main = elementBuilder("div", "main", root);
   const content = elementBuilder("div", "content", main);
 
-  // --- TOP PART (Always visible) ---
+  //TOP PART (Always visible) 
   const topContent = elementBuilder("div", "topContent", content);
   const searchWrapper = elementBuilder("div", "searchBar", topContent);
   elementBuilder("div", "searchIcon", searchWrapper);
@@ -20,12 +19,21 @@ export function buildLayout(root, index) {
     "google_translate_element",
     topContent,
   );
-   
-  const loading = elementBuilder("div", "loading",content);
+
+  const suggestedCities = elementBuilder(
+    "div",
+    "suggestedCities",
+    searchWrapper,
+  );
+  // Loads until the data are show
+  const loading = elementBuilder("div", "loading", content);
+
+  // Here is where all of the data are being placed when the user searches a city
+  // Displaying ever info they need to know
   const weatherContainer = elementBuilder("div", "weatherContainer", content);
   weatherContainer.style.display = "none";
 
-  // Top mid part
+  // TOP MID PART
   const topMidContent = elementBuilder(
     "div",
     "topMidContent",
@@ -55,7 +63,7 @@ export function buildLayout(root, index) {
   const hourlyText = elementBuilder("h1", "hourlyText", weatherContainer);
   hourlyText.textContent = "Hourly Forecast";
 
-  // Mid-lower part of the content
+  // MID-LOWER
   const lowerMidContent = elementBuilder(
     "div",
     "lowerMidContent",
@@ -72,20 +80,25 @@ export function buildLayout(root, index) {
   );
   const weekInfo = elementBuilder("div", "weekInfo", bottomContent);
 
-  // --- Settings panel ---
+  // Settings panel 
   const settingsPanel = elementBuilder("div", "settingsPanel", topContent);
   settingsPanel.style.display = "none";
 
   const unitRow = elementBuilder("div", "settingRow", settingsPanel);
   elementBuilder("p", "settingLabel", unitRow).textContent = "Temperature";
   const unitButtons = elementBuilder("div", "toggleGroup", unitRow);
+
+  // Celsius button conversion
   const celsiusBtn = elementBuilder("button", "toggleBtn", unitButtons);
   celsiusBtn.type = "button";
   celsiusBtn.textContent = "°C";
+
+   // fahrenheit button conversion
   const fahrenheitBtn = elementBuilder("button", "toggleBtn", unitButtons);
   fahrenheitBtn.type = "button";
   fahrenheitBtn.textContent = "°F";
 
+  // Here we set the desired theme of the page
   const themeRow = elementBuilder("div", "settingRow", settingsPanel);
   elementBuilder("p", "settingLabel", themeRow).textContent = "Theme";
   const themeButtons = elementBuilder("div", "toggleGroup", themeRow);
@@ -97,28 +110,29 @@ export function buildLayout(root, index) {
   lightBtn.textContent = "Light";
 
 
-    window.googleTranslateElementInit = function() {
-  new google.translate.TranslateElement(
-    {
-      pageLanguage: "en",
-      includedLanguages: "en,el,es,fr,de,it,ru",
-      layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-    },
-    "google_translate_element"
-  );
-};
+  // This is the google translator ,as of now it uses 7 languages
+  window.googleTranslateElementInit = function () {
+    new google.translate.TranslateElement(
+      {
+        pageLanguage: "en",
+        includedLanguages: "en,el,es,fr,de,it,ru",
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+      },
+      "google_translate_element",
+    );
+  };
 
-const translatorDiv = document.createElement("div");
-translatorDiv.id = "google_translate_element";
-settingsPanel.appendChild(translatorDiv);
+  const translatorDiv = document.createElement("div");
+  translatorDiv.id = "google_translate_element";
+  settingsPanel.appendChild(translatorDiv);
 
-const transScript = document.createElement("script");
-transScript.src = "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
-transScript.async = true;
-document.head.appendChild(transScript);
+  const transScript = document.createElement("script");
+  transScript.src =
+    "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+  transScript.async = true;
+  document.head.appendChild(transScript);
 
-
-
+  // Returning every crucial part of the page 
   return {
     search,
     settings,

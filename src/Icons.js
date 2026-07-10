@@ -1,3 +1,6 @@
+// These are all of the icons/svgs that being displayed on the page
+// based on the current conditionsu
+
 import clearDay from "./Images/clear-day.svg";
 import clearNight from "./Images/clear-night.svg";
 import rain from "./Images/rain.svg";
