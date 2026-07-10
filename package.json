@@ -13,9 +13,5 @@
     "build": "webpack",
     "live": "webpack serve",
     "deploy": "gh-pages -d dist"
-  },
-  "dependencies": {
-    "date-fns": "^4.1.0"
   }
 }
-  
