@@ -11,7 +11,6 @@ This project is built to provide a simple and responsive way to check weather de
 - CSS3
 - Webpack 5
 - webpack-dev-server
-- date-fns
 
 ## APIs & Modules Used
 - **Visual Crossing Weather API**: forecast and current weather data
